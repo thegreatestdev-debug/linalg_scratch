@@ -20,34 +20,36 @@ class Vector:
         return f"Vector({self.components})"
 
     def __eq__(self, other: object) -> bool:
-        # TODO: return False if other is not a Vector or lengths differ;
-        # compare components with math.isclose (never == on floats)
-        raise NotImplementedError
+        if not isinstance(other, Vector):
+            return False
+        if len(self) != len(other):
+            return False
+        return all(
+            math.isclose(a, b, abs_tol=1e-9)
+            for a, b in zip(self.components, other.components)
+        )
 
     def _check_same_dim(self, other: Vector) -> None:
         if len(self) != len(other):
             raise ValueError(f"Dimension mismatch: {len(self)} vs {len(other)}")
 
     def __add__(self, other: Vector) -> Vector:
-        # TODO: call _check_same_dim, then add component-wise
-        raise NotImplementedError
+        self._check_same_dim(other)
+        return Vector([a + b for a, b in zip(self.components, other.components)])
 
     def __sub__(self, other: Vector) -> Vector:
-        # TODO
-        raise NotImplementedError
+        self._check_same_dim(other)
+        return Vector([a - b for a, b in zip(self.components, other.components)])
 
     def __mul__(self, scalar: float) -> Vector:
-        # TODO: scalar multiplication, so Vector([1,2]) * 3
-        raise NotImplementedError
+        return Vector([c * scalar for c in self.components])
 
     def __rmul__(self, scalar: float) -> Vector:
-        # TODO: makes 3 * Vector([1,2]) work. Reuse __mul__.
-        raise NotImplementedError
+        return self * scalar
 
     def dot(self, other: Vector) -> float:
-        # TODO: sum of products of matching components
-        raise NotImplementedError
+        self._check_same_dim(other)
+        return sum(a * b for a, b in zip(self.components, other.components))
 
     def magnitude(self) -> float:
-        # TODO: sqrt of dot with itself
-        raise NotImplementedError
+        return math.sqrt(self.dot(self))

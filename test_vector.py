@@ -29,3 +29,15 @@ def test_empty_raises():
 def test_dot_commutative():
     a, b = Vector([1, -2, 3]), Vector([4, 0, -1])
     assert a.dot(b) == pytest.approx(b.dot(a))
+
+    def test_zero_vector_magnitude():
+        v = Vector([0, 0])
+        assert v.magnitude() == 0
+
+    def test_subtraction():
+        result = Vector([5, 7]) - Vector([2, 3])
+        assert result == Vector([3, 4])
+        
+    def test_dot_with_negative_components():
+        result = Vector([-1, 2]).dot(Vector([3, 4]))
+        assert result == 5
